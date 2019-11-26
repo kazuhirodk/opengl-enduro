@@ -108,11 +108,11 @@ void draw(){
   }
 
   if(!hasCollided){
-    if(buttons[0] && anima){
+    if(buttons[0] && animate){
       pos += (0.12 * speed);
       posBot += 0.01 * speed;
     }
-    if((buttons[1] ) && anima){
+    if((buttons[1] ) && animate){
       pos -= (0.12 * speed);
       posBot += 0.15 * speed;
       speed -= 0.02;
@@ -122,14 +122,14 @@ void draw(){
       if(turnCar < 0)
         turnCar = turnCar > 25 ? turnCar : turnCar + 1.5;
       turnCar = turnCar > 25 ? turnCar : turnCar + 0.8;
-      if(anima) speed = speed > 1 ? speed + abs(carPosX) * 0.0001 * speed/(15+(retreat*2)) : 1;
+      if(animate) speed = speed > 1 ? speed + abs(carPosX) * 0.0001 * speed/(15+(retreat*2)) : 1;
     }
     if(buttons[3] && !isTouchingRight()){
       carPosX = carPosX <= trackWidth/2+30? carPosX + 1.5 * speed/(15+(retreat*2)) : carPosX;
       if(turnCar > 0)
         turnCar = turnCar < -25 ? turnCar : turnCar - 1.5;
       turnCar = turnCar < -25 ? turnCar : turnCar - 0.8;
-      if(anima) speed = speed > 1 ? speed + abs(carPosX) * 0.0001 * speed/(15+(retreat*2)) : 1;
+      if(animate) speed = speed > 1 ? speed + abs(carPosX) * 0.0001 * speed/(15+(retreat*2)) : 1;
     }
 
     if(!buttons[2] && !buttons[3]){

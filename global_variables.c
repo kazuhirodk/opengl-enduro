@@ -24,7 +24,7 @@ GLdouble x_0=0,     y_0=40.0,   z_0= -100,
          V_x=0,     V_y=1,      V_z = 0,
          xCam = 0,  yCam= 0,    zCam=0;
 
-GLboolean anima = false, hasCollided = false;
+GLboolean animate = false, hasCollided = false;
 GLint colorCount = 0, returnPrevious = 0;
 GLfloat score = 0, skyPosition = 0, R = 1, G = 1, B = 0;
 GLchar scoreArray[12];
@@ -84,8 +84,8 @@ void Msg2(char *string, GLfloat x, GLfloat y, GLfloat *color){
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  gluLookAt(10, 10, 10, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0); // Altere aqui para visualizar diferentes estilos, seta 3 item para algo 10 pra tu ver
-  glScalef(.005,.005,.005); // word size
+  gluLookAt(10, 10, 10, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+  glScalef(.005,.005,.005);
   glTranslatef(-300+x, y, 0);
 
   glColor3fv(color);
@@ -100,20 +100,19 @@ void InitScreen(){
   w_width = glutGet(GLUT_WINDOW_WIDTH);
   w_height = glutGet(GLUT_WINDOW_HEIGHT);
 
-  glMatrixMode(GL_PROJECTION); //define que a matrix é a de projeção
-  glLoadIdentity(); //carrega a matrix de identidade
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
   gluPerspective(theta, aspect, d_near, d_far);
 
   glPushMatrix();
-  glMatrixMode(GL_MODELVIEW); //define que a matrix é a model view
-  glLoadIdentity(); //carrega a matrix de identidade
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
   gluLookAt(x_0,   y_0,   z_0,
             x_ref, y_ref, z_ref,
             V_x,   V_y,   V_z);
   glPopMatrix();
   glLightfv(GL_LIGHT1, GL_AMBIENT, ambience);
 
-  //Controle do ambience
   if(retreat != returnPrevious2){
     returnPrevious2 = retreat;
     colorCount2 = (colorCount2+1) % 4;
@@ -197,13 +196,13 @@ void MouseFunc(int botao, int estado, int x, int y){
 void Keyboard (unsigned char key, int x, int y){
   int timerID = 0;
   switch (key){
-    case 27:            // ESC
+    case 27:
       exit (0);
       break;
-    case 13:            // ENTER
+    case 13:
       break;
-    case 32:            // SPACE
-      anima = anima ? false : true;
+    case 32:
+      animate = animate ? false : true;
       TimerFunc(timerID);
       speed = 1;
       break;

@@ -46,7 +46,7 @@ extern GLdouble x_0,    y_0,    z_0,
                 V_x,    V_y,   V_z,
                 xCam,   yCam,   zCam;
 
-extern GLboolean anima, hasCollided;
+extern GLboolean animate, hasCollided;
 extern GLint retreat, colorCount, returnPrevious;
 GLint crashPosition, returnPrevious2, colorCount2, starsY[200], starsX[200];
 GLfloat ambience[5], position[4];
@@ -63,13 +63,11 @@ extern GLfloat s_car;
 extern GLint pos;
 extern GLfloat s_car, carPosX, turnCar, speed;
 
-// Bots
 extern GLfloat *botColor[], speed;
 extern GLint posBot;
 GLfloat rotBot;
 GLint count, dxBot;
 
-// Function Declarations
 int main(int, char**);
 void draw();
 int isTouchingLeft();
