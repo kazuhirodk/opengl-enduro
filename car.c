@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include "global_variables.h"
 
-void drawCar(GLfloat *cor){
+void drawCar(GLfloat *color){
   glPushMatrix();
   // front left wheel
   glPushMatrix();
@@ -169,7 +169,7 @@ void drawCar(GLfloat *cor){
   glEnd();
 
   // side
-  glColor3fv(cor);
+  glColor3fv(color);
   glBegin(GL_TRIANGLES);
     // left
     glNormal3f(-1.0, 0.0, 0.0);
@@ -233,7 +233,7 @@ void drawCar(GLfloat *cor){
     glVertex3f(8.5, 5.4, -2.5); glVertex3f(8.5, 5.4, 0.0);
 
     // rear side
-    glColor3fv(cor);
+    glColor3fv(color);
     glVertex3f(-8.5, 5.4, -2.5);  glVertex3f(8.5, 5.4, -2.5);
     glVertex3f(8.5, 8.1, -5.1);   glVertex3f(-8.5, 8.1, -5.1);
 
@@ -285,7 +285,7 @@ void drawCar(GLfloat *cor){
     glVertex3f(8.5, 4.5, -40.0); glVertex3f(8.5, 4.5, -36.7);
 
     // frontal
-    glColor3fv(cor);
+    glColor3fv(color);
     glNormal3f(0.0, 0.0, -1.0);
     glVertex3f(-8.5, 4.5, -40.0);  glVertex3f(8.5, 4.5, -40.0);
     glVertex3f(8.5, 9.6, -40.0);   glVertex3f(-8.5, 9.6, -40.0);

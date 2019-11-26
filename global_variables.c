@@ -12,14 +12,11 @@
 #include <unistd.h>
 #include <time.h>
 
-GLfloat abobora[]={.99,.06,.75},     amarelo[]={1,1,0},     azul[]={0,0,1},      azulCeu[]={.53,.81,.98}, azulEsc[]={0,0,.55},
-        azulMarinho[]={.07,.04,.56}, azulCiano[]={0,1,1},   white[]={1,1,1},    cinza[]={.5,.5,.5},      cinzaClaro[]={.7,.7,.7},
-        cinzaEsc[]={.66,.66,.66},    furchsia[]={1,0,1},    jambo[]={1,.27,0},  fuligem[]={.24,.17,.12}, laranja[]={1,.65,0},
-        cinzaFosco[]={.41,.41,.41},  rosa[]={1,.75,.8},   rosaBri[]={1,0,.5}, roxo[]={.5,0,.5},         verde[]={0,1,0},
-        verdeGrama[]={.49,.99,0},     verdeEsc[]={0,.39,0}, black[]={0,0,0},     marrom[]={.65,.16,.16},red[]={1,0,0},
-        roadColorA[]={.42,.42,.42},  roadColorB[]={.41,.41,.41}, grassColorA[]={.06,.78,.06}, grassColorB[]={0.0,.6,0.0};
+GLfloat yellow[]={1,1,0}, blue[]={0,0,1}, white[]={1,1,1}, red[]={1,0,0},
+        pink[]={1,.75,.8}, green[]={0,1,0}, black[]={0,0,0},
+        roadColorA[]={.42,.42,.42}, roadColorB[]={.41,.41,.41},
+        grassColorA[]={.06,.78,.06}, grassColorB[]={0.0,.6,0.0};
 
-// Camera
 GLboolean buttons[] = {false, false, false, false};
 GLdouble theta=90,  aspect=1,   d_near=1, d_far=1800;
 GLdouble x_0=0,     y_0=40.0,   z_0= -100,
@@ -27,28 +24,22 @@ GLdouble x_0=0,     y_0=40.0,   z_0= -100,
          V_x=0,     V_y=1,      V_z = 0,
          xCam = 0,  yCam= 0,    zCam=0;
 
-// Game
 GLboolean anima = false, hasCollided = false;
-GLint contaCor = 0, voltaAnt = 0;
-GLfloat pontuacao = 0, posCeu = 0, R = 1, G = 1, B = 0;
-GLchar score[12];
+GLint colorCount = 0, returnPrevious = 0;
+GLfloat score = 0, skyPosition = 0, R = 1, G = 1, B = 0;
+GLchar scoreArray[12];
 GLfloat posAct = -1.9, Ytitulo1 = 0, Xtitulo1 = 0;
 GLboolean flagIntro = false, flagIntro2= false;
 GLboolean flagIntro3 = false, flagIntro4 = false;
 
-
-// Pista
 GLint trackSize = 19000, trackWidth = 80, retreat = 0;
 
-
-// Jogador
 GLfloat s_car = 1;
 GLint pos = 0;
 GLfloat carPosX = 0.0, turnCar = 0, speed = 1;
 
-// Bot
 GLint posBot = 500;
-GLfloat *botColor[] = {amarelo, verde, azul, rosa};
+GLfloat *botColor[] = {yellow, green, blue, pink};
 GLint teste = 0;
 
 void freeArray(Array *a) {
@@ -73,31 +64,31 @@ void Msg(char *string, GLfloat x, GLfloat y){
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,*string++);
   glutPostRedisplay();
 }
-void screenMessage(char *string, GLfloat x, GLfloat y, GLfloat *cor){
+void screenMessage(char *string, GLfloat x, GLfloat y, GLfloat *color){
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   gluOrtho2D(-1.0,1.0,-1.0,1.0);
   glLightfv(GL_LIGHT0, GL_POSITION, position);
-  glColor3fv(cor);
+  glColor3fv(color);
   glRasterPos2f(x,y);
   while(*string)
     glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,*string++);
   glutPostRedisplay();
 }
-void Msg2(char *string, GLfloat x, GLfloat y, GLfloat *cor){
+void Msg2(char *string, GLfloat x, GLfloat y, GLfloat *color){
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   glOrtho(-2.0, 2.0, -2.0, 2.0, -2.0, 500.0);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  gluLookAt(0, 0, 10, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0); // Altere aqui para visualizar diferentes estilos, seta 3 item para algo 10 pra tu ver
-  glScalef(.005,.005,.005); // AUmenta e diminui o tamanho da letra
+  gluLookAt(10, 10, 10, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0); // Altere aqui para visualizar diferentes estilos, seta 3 item para algo 10 pra tu ver
+  glScalef(.005,.005,.005); // word size
   glTranslatef(-300+x, y, 0);
 
-  glColor3fv(cor);
+  glColor3fv(color);
   glLineWidth(15.0);
   while(*string)
     glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN,*string++);
@@ -120,38 +111,38 @@ void InitScreen(){
             x_ref, y_ref, z_ref,
             V_x,   V_y,   V_z);
   glPopMatrix();
-  glLightfv(GL_LIGHT1, GL_AMBIENT, ambiente);
+  glLightfv(GL_LIGHT1, GL_AMBIENT, ambience);
 
-  //Controle do ambiente
-  if(retreat != voltaAnt2){
-    voltaAnt2 = retreat;
-    contaCor2 = (contaCor2+1) % 4;
+  //Controle do ambience
+  if(retreat != returnPrevious2){
+    returnPrevious2 = retreat;
+    colorCount2 = (colorCount2+1) % 4;
   }
-  if(contaCor2 == 3){
-    ambiente[0] = 1.0 - B;
-    ambiente[1] = 1.0 - B;
-    ambiente[2] = 1.0 - B;
-    ambiente[4] = 1.0;
+  if(colorCount2 == 3){
+    ambience[0] = 1.0 - B;
+    ambience[1] = 1.0 - B;
+    ambience[2] = 1.0 - B;
+    ambience[4] = 1.0;
   }
-  else if(contaCor2 == 2){
-    ambiente[0] = 1.0;
-    ambiente[1] = 1.0;
-    ambiente[2] = 1.0;
-    ambiente[4] = 1.0;
+  else if(colorCount2 == 2){
+    ambience[0] = 1.0;
+    ambience[1] = 1.0;
+    ambience[2] = 1.0;
+    ambience[4] = 1.0;
   }
-  else if(contaCor2 == 1){
-    ambiente[0] = B;
-    ambiente[1] = B;
-    ambiente[2] = B;
-    ambiente[4] = 1.0;
+  else if(colorCount2 == 1){
+    ambience[0] = B;
+    ambience[1] = B;
+    ambience[2] = B;
+    ambience[4] = 1.0;
   }
   else{
-    ambiente[0] = 0.0;
-    ambiente[1] = 0.0;
-    ambiente[2] = 0.0;
-    ambiente[4] = 1.0;
+    ambience[0] = 0.0;
+    ambience[1] = 0.0;
+    ambience[2] = 0.0;
+    ambience[4] = 1.0;
   }
-  printf("count: %d  R: %.3f  G: %.3f  B: %.3f\n", contaCor2, R, G, B);
+  printf("count: %d  R: %.3f  G: %.3f  B: %.3f\n", colorCount2, R, G, B);
 }
 void FitWindow(GLsizei w, GLsizei h){
   if (w >= h)

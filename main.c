@@ -13,19 +13,19 @@
 void TimerFunc(int valor){
   int f = valor;
   if(hasCollided){
-    if(posQndoBateu > 100) {
+    if(crashPosition > 100) {
       hasCollided = false;
     }else{
       speed = 0.98 * speed > 8 ? 0.98 * speed : 2;
       pos = pos - 0.5;
-      pontuacao -= 3;
+      score -= 3;
       posBot += 2;
       if(turnCar > 0){
         turnCar = turnCar * 0.90;
       }else if (turnCar < 0){
         turnCar = turnCar * 0.90;
       }
-      posQndoBateu++;
+      crashPosition++;
     }
   }
   else{
@@ -33,12 +33,12 @@ void TimerFunc(int valor){
   }
   posBot += 0.8*speed;
 
-  if(pontuacao < 0){
-    pontuacao = 0;
+  if(score < 0){
+    score = 0;
   }else if(!isTouchingRight() && !isTouchingLeft()){
-    pontuacao += 0.2;
+    score += 0.2;
   }
-//    sprintf(score, "Speed: %.0f km/h                             Points: %.0f",(speed-1)*7, pontuacao);
+//    sprintf(scoreArray, "Speed: %.0f km/h                             Points: %.0f",(speed-1)*7, score);
 
   while(pos >= trackSize){
     pos -= trackSize;
@@ -48,19 +48,19 @@ void TimerFunc(int valor){
   while(posBot >= trackSize) posBot -= trackSize;
   while(posBot < 0)         posBot += trackSize;
   //Controle do céu
-  if(retreat != voltaAnt){
-      voltaAnt = retreat;
-      contaCor = (contaCor+1) % 4;
+  if(retreat != returnPrevious){
+      returnPrevious = retreat;
+      colorCount = (colorCount+1) % 4;
   }
-  if(contaCor == 3){
+  if(colorCount == 3){
     B = ((float)(pos+0.1)/(float)trackSize);// > 0.0 ? ((float)(pos+0.1)/(float)trackSize): 0.0;
     R = 2*B; G = 2*B;
     glClearColor(.0f, .0f, 1.0 - B, .0f);
   }
-  else if(contaCor == 2){
+  else if(colorCount == 2){
     glClearColor(.0f, .0f, 1.0, .0f);
   }
-  else if(contaCor == 1){
+  else if(colorCount == 1){
     B = ((float)pos/(float)trackSize);// > 0.0 ? ((float)pos/(float)trackSize): 0.0;
     R = 1; G = 1;
     glClearColor(.0f, .0f, B, .0f);
@@ -88,13 +88,13 @@ void TimerFunc(int valor){
     pos -= (0.12 * speed);
     posBot += 0.15 * speed;
     speed -= 0.02;
-    pontuacao -= 1;
+    score -= 1;
   }
   if(anima && Points.point[pos].curve > 0.0){
-    posCeu -= speed;
+    skyPosition -= speed;
   }
   if(anima && Points.point[pos].curve < 0.0){
-    posCeu += speed;
+    skyPosition += speed;
   }
   InitScreen();
   if(anima)
@@ -102,7 +102,7 @@ void TimerFunc(int valor){
   glutPostRedisplay();
 }
 
-void drawBots(GLfloat *cor, GLint dzBot, GLint dx){
+void drawBots(GLfloat *color, GLint dzBot, GLint dx){
   // Verifica se posBot+dzBot esta dentro do range (0-trackSize)
   if((posBot + dzBot) > trackSize){
       dzBot = -(trackSize - dzBot);
@@ -117,7 +117,7 @@ void drawBots(GLfloat *cor, GLint dzBot, GLint dx){
   glRotatef(Points.point[posBot+dzBot].curve * 2000, 0, 0, 1);
   glTranslatef(0,0,+5);
   glScalef(s_car, s_car, s_car);
-  drawCar(cor);
+  drawCar(color);
   glPopMatrix();
 
   if(Points.point[pos].curve == 0.0){
@@ -127,8 +127,8 @@ void drawBots(GLfloat *cor, GLint dzBot, GLint dx){
     )
     {
       hasCollided = true;
-      posQndoBateu = 0;
-      pontuacao -= 3;
+      crashPosition = 0;
+      score -= 3;
     }
 }else if(Points.point[pos].curve > 0.0){
     if( (pos > (posBot+dzBot-220) && pos < posBot+dzBot-140) && (              // estao na mesma posicao em z
@@ -137,8 +137,8 @@ void drawBots(GLfloat *cor, GLint dzBot, GLint dx){
     )
     {
       hasCollided = true;
-      posQndoBateu = 0;
-      pontuacao -= 3;
+      crashPosition = 0;
+      score -= 3;
     }
 }else if(Points.point[pos].curve < 0.0){
     if( (pos > (posBot+dzBot-220) && pos < posBot+dzBot-140) && (              // estao na mesma posicao em z
@@ -147,8 +147,8 @@ void drawBots(GLfloat *cor, GLint dzBot, GLint dx){
     )
     {
       hasCollided = true;
-      posQndoBateu = 0;
-      pontuacao -= 3;
+      crashPosition = 0;
+      score -= 3;
     }
   }
   glutPostRedisplay();
@@ -170,10 +170,10 @@ int main(int argc, char *argv[]){
   x = 0; dx = 0;
   initArray(&Points, trackSize+2);
   for(int j = 0; j < 200; j++){
-    vetorEstrelasX[j] = (rand()%10000)-5000;
+    starsX[j] = (rand()%10000)-5000;
   }
   for(int j = 0; j < 200; j++){
-    vetorEstrelasY[j] = rand()%1000;
+    starsY[j] = rand()%1000;
   }
   for(int i = 0; i < trackSize; i++){
     tPoint point;
@@ -187,7 +187,7 @@ int main(int argc, char *argv[]){
         c = 0;
         flagCor = flagCor? false : true;
     }else c++;
-    point.cor =   flagCor;
+    point.color =   flagCor;
 
     // Curvas
     if( i > 1800 && i < 2800) point.curve = 0.001;
@@ -212,7 +212,7 @@ int main(int argc, char *argv[]){
     glutIdleFunc(IdleFunc);
     // glutDisplayFunc(desenha_actvision);
     glutDisplayFunc(draw);
-    glClearColor(.0f, .0f, .0f, .0f); //define a cor de fundo
+    glClearColor(.0f, .0f, .0f, .0f); //define a color de fundo
     glEnable(GL_DEPTH_TEST); //habilita o teste de profundidade
     InitScreen();
   glutMainLoop();

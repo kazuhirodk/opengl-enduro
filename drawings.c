@@ -1,8 +1,8 @@
 #include "global_variables.h"
 
-void drawSegment(GLfloat *cor, float x1, float y1, float z1,
+void drawSegment(GLfloat *color, float x1, float y1, float z1,
                               float x2, float y2, float z2, float w){
-  glColor3fv(cor);
+  glColor3fv(color);
   glBegin(GL_QUADS);
     glVertex3f(x1-w,y1,z1);
     glVertex3f(x2-w,y2,z2);
@@ -17,11 +17,11 @@ void drawTrack(){
   x= 0;
   dx = 0;
   glPushMatrix();
-  glTranslatef(posCeu,0,-2000);
+  glTranslatef(skyPosition,0,-2000);
   for(int i = 0; i < 200; i++){
     glPushMatrix();
       glColor3f(R-B,G-B,1);
-      glTranslatef(vetorEstrelasX[i],vetorEstrelasY[i],0);
+      glTranslatef(starsX[i],starsY[i],0);
       glutSolidSphere(3,10,10);
     glPopMatrix();
   }
@@ -33,7 +33,7 @@ void drawTrack(){
 
   glPopMatrix();
   glPopMatrix();
-  // Points.point[posBot].bot = true;
+
   for(n = pos; n < pos+2500; n++){
     p1 = &(Points.point[(n-1)%trackSize]);
     p2 = &(Points.point[n%trackSize]);
@@ -41,13 +41,13 @@ void drawTrack(){
     dx += p2->curve;
     p2->x = x;
 
-    drawSegment( p1->cor? grassColorA : grassColorB,
+    drawSegment( p1->color? grassColorA : grassColorB,
                 p1->x, p1->y-2, p1->z+pos-(n-1>=trackSize?trackSize:0),
                 p2->x, p2->y-2, p2->z+pos-(n  >=trackSize?trackSize:0), trackWidth*200);
-    drawSegment( p1->cor? black : white,
+    drawSegment( p1->color? black : white,
                 p1->x, p1->y-1, p1->z+pos-(n-1>=trackSize?trackSize:0),
                 p2->x, p2->y-1, p2->z+pos-(n  >=trackSize?trackSize:0), trackWidth*1.2);
-    drawSegment( p1->cor? roadColorA: roadColorB,
+    drawSegment( p1->color? roadColorA: roadColorB,
                 p1->x, p1->y,   p1->z+pos-(n-1>=trackSize?trackSize:0),
                 p2->x, p2->y,   p2->z+pos-(n  >=trackSize?trackSize:0), trackWidth);
   }
@@ -55,7 +55,8 @@ void drawTrack(){
 }
 
 void draw(){
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //limpa o buffer
+  // buffer clear
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
 
   glEnable(GL_LIGHTING);
@@ -63,10 +64,10 @@ void draw(){
   glEnable(GL_LIGHT1);
   glEnable(GL_COLOR_MATERIAL);
 
-  glLightfv(GL_LIGHT1, GL_AMBIENT, ambiente);
+  glLightfv(GL_LIGHT1, GL_AMBIENT, ambience);
 
-  GLfloat difusao[]={1.0, 1.0, 1.0, 1.0};
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, difusao);
+  GLfloat difusion[] = {1.0, 1.0, 1.0, 1.0};
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, difusion);
   InitScreen();
 
   glPushMatrix();
@@ -106,7 +107,6 @@ void draw(){
     glPopMatrix();
   }
 
-  // Verifica Teclas:
   if(!hasCollided){
     if(buttons[0] && anima){
       pos += (0.12 * speed);
@@ -145,7 +145,7 @@ void draw(){
   while(posBot >= trackSize)    posBot -= trackSize;
   while(posBot < 0)             posBot += trackSize;
 
-  screenMessage(score, -.7,.99, white);
+  screenMessage(scoreArray, -.7,.99, white);
 
   glFlush();
   glutSwapBuffers();
