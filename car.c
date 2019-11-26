@@ -10,12 +10,13 @@
 #include <stdio.h>
 #include "global_variables.h"
 
-void DesenhaCarro(GLfloat *cor){
+void drawCar(GLfloat *cor){
   glPushMatrix();
-  //Roda dianteira esquerda
+  // front left wheel
   glPushMatrix();
   glTranslatef(-7.0,0.0,-33.0);
-  glRotatef(turnCar - Points.point[pos].curve * 2000, 0, 1, 0); //Roda dianteira direita
+  // front right wheel
+  glRotatef(turnCar - Points.point[pos].curve * 2000, 0, 1, 0);
   glTranslatef(7.0,0.0,33.0);
   glColor3f(0.05, 0.05, 0.05);
   glBegin(GL_QUADS);
@@ -44,7 +45,7 @@ void DesenhaCarro(GLfloat *cor){
     glVertex3f(-5.5, 0.0, -31.8); glVertex3f(-8.5, 0.0, -31.8);
   glEnd();
 
-  //"Tampa" esquerda
+  // left side
   glBegin(GL_POLYGON);
     glVertex3f(-8.5, 0.0, -31.8); glVertex3f(-8.5, 0.0, -34.2);
     glVertex3f(-8.5, 2.1, -35.9); glVertex3f(-8.5, 5.0, -35.9);
@@ -53,11 +54,12 @@ void DesenhaCarro(GLfloat *cor){
   glEnd();
 
   glPopMatrix();
-  //Roda dianteira direita
+
+  // front right wheel
   glColor3f(0.05, 0.05, 0.05);
   glPushMatrix();
   glTranslatef(7.0,0.0,-33.0);
-  glRotatef(turnCar - Points.point[pos].curve * 2000, 0, 1, 0);//Roda dianteira direita
+  glRotatef(turnCar - Points.point[pos].curve * 2000, 0, 1, 0);
   glTranslatef(-7.0,0.0,33.0);
   glBegin(GL_QUADS);
     glVertex3f(5.5, 0.0, -31.8); glVertex3f(8.5, 0.0, -31.8);
@@ -85,7 +87,7 @@ void DesenhaCarro(GLfloat *cor){
     glVertex3f(8.5, 0.0, -31.8); glVertex3f(5.5, 0.0, -31.8);
   glEnd();
 
-  //"Tampa" direita
+  // right side
   glBegin(GL_POLYGON);
     glVertex3f(8.5, 0.0, -31.8); glVertex3f(8.5, 0.0, -34.2);
     glVertex3f(8.5, 2.1, -35.9); glVertex3f(8.5, 5.0, -35.9);
@@ -95,7 +97,7 @@ void DesenhaCarro(GLfloat *cor){
 
   glPopMatrix();
 
-  //Roda traseira esquerda
+  // back left wheel
   glColor3f(0.05, 0.05, 0.05);
   glBegin(GL_QUADS);
     glVertex3f(-9.0, 0.0, -5.5);   glVertex3f(-6.0, 0.0, -5.5);
@@ -123,7 +125,7 @@ void DesenhaCarro(GLfloat *cor){
     glVertex3f(-6.0, 0.0, -5.5);   glVertex3f(-9.0, 0.0, -5.5);
   glEnd();
 
-  //"Tampa" esquerda
+  // left side
   glBegin(GL_POLYGON);
     glVertex3f(-9.0, 0.0, -5.5);  glVertex3f(-9.0, 0.0, -8.5);
     glVertex3f(-9.0, 2.1, -10.5); glVertex3f(-9.0, 5.0, -10.5);
@@ -131,7 +133,7 @@ void DesenhaCarro(GLfloat *cor){
     glVertex3f(-9.0, 5.0, -3.5);  glVertex3f(-9.0, 2.1, -3.5);
   glEnd();
 
-  //Roda traseira direita
+  // back right wheel
   glBegin(GL_QUADS);
     glVertex3f(6.0, 0.0, -5.5);   glVertex3f(9.0, 0.0, -5.5);
     glVertex3f(9.0, 0.0, -8.5);   glVertex3f(6.0, 0.0, -8.5);
@@ -158,7 +160,7 @@ void DesenhaCarro(GLfloat *cor){
     glVertex3f(9.0, 0.0, -5.5);   glVertex3f(6.0, 0.0, -5.5);
   glEnd();
 
-  //"Tampa" direita
+  // right side
   glBegin(GL_POLYGON);
     glVertex3f(9.0, 0.0, -5.5);  glVertex3f(9.0, 0.0, -8.5);
     glVertex3f(9.0, 2.1, -10.5); glVertex3f(9.0, 5.0, -10.5);
@@ -166,10 +168,10 @@ void DesenhaCarro(GLfloat *cor){
     glVertex3f(9.0, 5.0, -3.5);  glVertex3f(9.0, 2.1, -3.5);
   glEnd();
 
-  //Laterais
+  // side
   glColor3fv(cor);
   glBegin(GL_TRIANGLES);
-    //Esquerda
+    // left
     glNormal3f(-1.0, 0.0, 0.0);
     glVertex3f(-8.5, 5.4, 0.0);   glVertex3f(-8.5, 5.4, -2.5);    glVertex3f(-8.5, 11.6, 0.0);//01
     glVertex3f(-8.5, 5.4, -2.5);  glVertex3f(-8.5, 8.1, -5.1);    glVertex3f(-8.5, 11.6, 0.0);//02
@@ -187,7 +189,7 @@ void DesenhaCarro(GLfloat *cor){
     glVertex3f(-8.5, 8.1, -34.5); glVertex3f(-8.5, 5.4, -36.7);   glVertex3f(-8.5, 9.6, -40.0);//14
     glVertex3f(-8.5, 5.4, -36.7); glVertex3f(-8.5, 5.4, -40.0);   glVertex3f(-8.5, 9.6, -40.0);//15
 
-    //Direita
+    // right
     glNormal3f(1.0, 0.0, 0.0);
     glVertex3f(8.5, 5.4, 0.0);   glVertex3f(8.5, 5.4, -2.5);    glVertex3f(8.5, 11.6, 0.0);//01
     glVertex3f(8.5, 5.4, -2.5);  glVertex3f(8.5, 8.1, -5.1);    glVertex3f(8.5, 11.6, 0.0);//02
@@ -206,9 +208,9 @@ void DesenhaCarro(GLfloat *cor){
     glVertex3f(8.5, 5.4, -36.7); glVertex3f(8.5, 5.4, -40.0);   glVertex3f(8.5, 9.6, -40.0);//15
   glEnd();
 
-  //Carroceria
+  // body
   glBegin(GL_QUADS);
-    //Parachoque traseiro
+    // rear bumper
     glColor3f(0.0, 0.0, 0.0);
     glNormal3f(0.0, 0.0, 1.0);
     glVertex3f(-8.5, 5.4, 0.0); glVertex3f(8.5, 5.4, 0.0);
@@ -220,17 +222,17 @@ void DesenhaCarro(GLfloat *cor){
     glVertex3f(-8.5, 2.9, -2.5);  glVertex3f(8.5, 2.9, -2.5);
     glVertex3f(8.5, 5.4, -2.5);   glVertex3f(-8.5, 5.4, -2.5);
 
-    //Tampa esquerda
+    // left side
     glNormal3f(-1.0, 0.0, 0.0);
     glVertex3f(-8.5, 2.9, 0.0);  glVertex3f(-8.5, 2.9, -2.5);
     glVertex3f(-8.5, 5.4, -2.5); glVertex3f(-8.5, 5.4, 0.0);
 
-    //Tampa direita
+    // right side
     glNormal3f(1.0, 0.0, 0.0);
     glVertex3f(8.5, 2.9, 0.0);  glVertex3f(8.5, 2.9, -2.5);
     glVertex3f(8.5, 5.4, -2.5); glVertex3f(8.5, 5.4, 0.0);
 
-    //Cavidade traseira
+    // rear side
     glColor3fv(cor);
     glVertex3f(-8.5, 5.4, -2.5);  glVertex3f(8.5, 5.4, -2.5);
     glVertex3f(8.5, 8.1, -5.1);   glVertex3f(-8.5, 8.1, -5.1);
@@ -244,11 +246,10 @@ void DesenhaCarro(GLfloat *cor){
     glVertex3f(-8.5, 8.1, -11.5); glVertex3f(8.5, 8.1, -11.5);
     glVertex3f(8.5, 2.9, -11.5);  glVertex3f(-8.5, 2.9, -11.5);
 
-    //Base
     glVertex3f(-8.5, 2.9, -11.5); glVertex3f(8.5, 2.9, -11.5);
     glVertex3f(8.5, 2.9, -29.3);  glVertex3f(-8.5, 2.9, -29.3);
 
-    //Cavidade dianteira
+    // frontal side
     glVertex3f(-8.5, 2.9, -29.3); glVertex3f(8.5, 2.9, -29.3);
     glVertex3f(8.5, 5.4, -29.3);  glVertex3f(-8.5, 5.4, -29.3);
 
@@ -261,7 +262,7 @@ void DesenhaCarro(GLfloat *cor){
     glVertex3f(-8.5, 8.1, -34.5); glVertex3f(8.5, 8.1, -34.5);
     glVertex3f(8.5, 5.4, -36.7);  glVertex3f(-8.5, 5.4, -36.7);
 
-    //Parachoque dianteiro
+    // front bumper
     glColor3f(0.0, 0.0, 0.0);
     glNormal3f(0.0, 0.0, -1.0);
     glVertex3f(-8.5, 4.5, -36.7); glVertex3f(8.5, 4.5, -36.7);
@@ -273,36 +274,36 @@ void DesenhaCarro(GLfloat *cor){
     glVertex3f(-8.5, 2.9, -40.0); glVertex3f(8.5, 2.9, -40.0);
     glVertex3f(8.5, 4.5, -40.0);  glVertex3f(-8.5, 4.5, -40.0);
 
-    //Tampa esquerda
+    // left side
     glNormal3f(-1.0, 0.0, 0.0);
     glVertex3f(-8.5, 2.9, -36.7); glVertex3f(-8.5, 2.9, -40.0);
     glVertex3f(-8.5, 4.5, -40.0); glVertex3f(-8.5, 4.5, -36.7);
 
-    //Tampa direita
+    // right side
     glNormal3f(1.0, 0.0, 0.0);
     glVertex3f(8.5, 2.9, -36.7); glVertex3f(8.5, 2.9, -40.0);
     glVertex3f(8.5, 4.5, -40.0); glVertex3f(8.5, 4.5, -36.7);
 
-    //Dianteira
+    // frontal
     glColor3fv(cor);
     glNormal3f(0.0, 0.0, -1.0);
     glVertex3f(-8.5, 4.5, -40.0);  glVertex3f(8.5, 4.5, -40.0);
     glVertex3f(8.5, 9.6, -40.0);   glVertex3f(-8.5, 9.6, -40.0);
 
-    //Capo
+    // hood
     glNormal3f(0.0, 1.0, 0.0);
     glVertex3f(-8.5, 9.6, -40.0);  glVertex3f(8.5, 9.6, -40.0);
     glVertex3f(8.5, 11.8, -26.7);  glVertex3f(-8.5, 11.8, -26.7);
 
-    //Parabrisa
+    // windshield
     glVertex3f(-8.5, 11.8, -26.7); glVertex3f(8.5, 11.8, -26.7);
     glVertex3f(8.5, 16.2, -20.0);  glVertex3f(-8.5, 16.2, -20.0);
 
-    //Teto
+    // ceiling
     glVertex3f(-8.5, 16.2, -20.0); glVertex3f(8.5, 16.2, -20.0);
     glVertex3f(8.5, 16.2, -10.0);  glVertex3f(-8.5, 16.2, -10.0);
 
-    //Traseira
+    // back
     glNormal3f(0.0, 0.0, 1.0);
     glVertex3f(-8.5, 16.2, -10.0);  glVertex3f(8.5, 16.2, -10.0);
     glVertex3f(8.5, 11.6, 0.0);     glVertex3f(-8.5, 11.6, 0.0);
@@ -311,41 +312,40 @@ void DesenhaCarro(GLfloat *cor){
     glVertex3f(8.5, 5.4, 0.0);    glVertex3f(-8.5, 5.4, 0.0);
   glEnd();
 
-  //Vidros
+  // glasses
   glColor3f(0.2, 0.2, 0.2);
 
   glBegin(GL_QUADS);
-    //Traseiro
+    // back
     glNormal3f(0.0, 0.0, 1.0);
     glVertex3f(-7.5, 12.45, -1.8); glVertex3f(7.5, 12.45, -1.8);
     glVertex3f(7.5, 15.8, -9.1);   glVertex3f(-7.5, 15.8, -9.1);
   glEnd();
 
   glBegin(GL_QUADS);
-    //Dianteiro
+    // frontal
     glNormal3f(0.0, 0.0, -1.0);
     glVertex3f(-7.5, 12.7, -25.4);  glVertex3f(7.5, 12.7, -25.4);
     glVertex3f(7.5, 15.7, -20.8);   glVertex3f(-7.5, 15.7, -20.8);
   glEnd();
 
   glBegin(GL_POLYGON);
-    //Vidros esquerdo
+    // left glasses
     glNormal3f(-1.0, 0.0, 0.0);
     glVertex3f(-8.51, 11.2, -1.6);  glVertex3f(-8.51, 11.2, -25.7);
     glVertex3f(-8.51, 15.2, -19.7); glVertex3f(-8.51, 15.2, -10.2);
   glEnd();
   glBegin(GL_POLYGON);
-
-    //Vidros direito
+    // frontal glasses
     glNormal3f(1.0, 0.0, 0.0);
     glVertex3f(8.51, 11.2, -1.6);  glVertex3f(8.51, 11.2, -25.7);
     glVertex3f(8.51, 15.2, -19.7); glVertex3f(8.51, 15.2, -10.2);
   glEnd();
 
-  //Portas
+  // doors
   glColor3f(0.0, 0.0, 0.0);
 
-  //Esquerda
+  // left
   glNormal3f(-1.0, 0.0, 0.0);
   glBegin(GL_LINES);
     glVertex3f(-8.51, 4.4, -13.0); glVertex3f(-8.51, 15.2, -13.0);
@@ -353,7 +353,7 @@ void DesenhaCarro(GLfloat *cor){
     glVertex3f(-8.51, 4.4, -25.7); glVertex3f(-8.51, 11.2, -25.7);
   glEnd();
 
-  //Direita
+  // right
   glNormal3f(1.0, 0.0, 0.0);
   glBegin(GL_LINES);
     glVertex3f(8.51, 4.4, -13.0); glVertex3f(8.51, 15.2, -13.0);
@@ -361,17 +361,17 @@ void DesenhaCarro(GLfloat *cor){
     glVertex3f(8.51, 4.4, -25.7); glVertex3f(8.51, 11.2, -25.7);
   glEnd();
 
-  //Lanternas
+  // lantern
   glColor3f(0.8, 0.0, 0.0);
 
-  //Traseira esquerda
+  // back left
   glNormal3f(0.0, 0.0, 1.0);
   glBegin(GL_QUADS);
     glVertex3f(-6.5, 9.1, 0.1);  glVertex3f(-4.5, 9.1, 0.1);
     glVertex3f(-4.5, 10.6, 0.1); glVertex3f(-6.5, 10.6, 0.1);
   glEnd();
 
-  //Traseira direita
+  // back right
   glNormal3f(0.0, 0.0, 1.0);
   glBegin(GL_QUADS);
     glVertex3f(6.5, 9.1, 0.1);  glVertex3f(4.5, 9.1, 0.1);
@@ -380,21 +380,20 @@ void DesenhaCarro(GLfloat *cor){
 
   glColor3f(0.9, 0.9, 0.0);
 
-  //Seta esquerda
+  // back lights
   glNormal3f(0.0, 0.0, 1.0);
   glBegin(GL_QUADS);
     glVertex3f(-7.5, 9.1, 0.1);  glVertex3f(-6.5, 9.1, 0.1);
     glVertex3f(-6.5, 10.6, 0.1); glVertex3f(-7.5, 10.6, 0.1);
   glEnd();
 
-  //Seta direita
   glNormal3f(0.0, 0.0, 1.0);
   glBegin(GL_QUADS);
     glVertex3f(6.5, 9.1, 0.1);  glVertex3f(7.5, 9.1, 0.1);
     glVertex3f(7.5, 10.6, 0.1); glVertex3f(6.5, 10.6, 0.1);
   glEnd();
 
-  //Escapamentos
+  // exhaust
   glColor3f(0.5, 0.5, 0.5);
   glBegin(GL_LINES);
     glVertex3f(5.3, 3.9, 0.1); glVertex3f(5.7, 3.9, 0.1);

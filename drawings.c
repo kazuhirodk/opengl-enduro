@@ -1,6 +1,6 @@
 #include "global_variables.h"
 
-void DesenhaSeg(GLfloat *cor, float x1, float y1, float z1,
+void drawSegment(GLfloat *cor, float x1, float y1, float z1,
                               float x2, float y2, float z2, float w){
   glColor3fv(cor);
   glBegin(GL_QUADS);
@@ -11,8 +11,8 @@ void DesenhaSeg(GLfloat *cor, float x1, float y1, float z1,
   glEnd();
 }
 
-void DesenhaPista(){
-  Ponto_t *p2, *p1;
+void drawTrack(){
+  tPoint *p2, *p1;
   int n;
   x= 0;
   dx = 0;
@@ -35,26 +35,26 @@ void DesenhaPista(){
   glPopMatrix();
   // Points.point[posBot].bot = true;
   for(n = pos; n < pos+2500; n++){
-    p1 = &(Points.point[(n-1)%tamPista]);
-    p2 = &(Points.point[n%tamPista]);
+    p1 = &(Points.point[(n-1)%trackSize]);
+    p2 = &(Points.point[n%trackSize]);
     x += dx;
     dx += p2->curve;
     p2->x = x;
 
-    DesenhaSeg( p1->cor? grassColorA : grassColorB,
-                p1->x, p1->y-2, p1->z+pos-(n-1>=tamPista?tamPista:0),
-                p2->x, p2->y-2, p2->z+pos-(n  >=tamPista?tamPista:0), larPista*200);
-    DesenhaSeg( p1->cor? preto : branco,
-                p1->x, p1->y-1, p1->z+pos-(n-1>=tamPista?tamPista:0),
-                p2->x, p2->y-1, p2->z+pos-(n  >=tamPista?tamPista:0), larPista*1.2);
-    DesenhaSeg( p1->cor? roadColorA: roadColorB,
-                p1->x, p1->y,   p1->z+pos-(n-1>=tamPista?tamPista:0),
-                p2->x, p2->y,   p2->z+pos-(n  >=tamPista?tamPista:0), larPista);
+    drawSegment( p1->cor? grassColorA : grassColorB,
+                p1->x, p1->y-2, p1->z+pos-(n-1>=trackSize?trackSize:0),
+                p2->x, p2->y-2, p2->z+pos-(n  >=trackSize?trackSize:0), trackWidth*200);
+    drawSegment( p1->cor? black : white,
+                p1->x, p1->y-1, p1->z+pos-(n-1>=trackSize?trackSize:0),
+                p2->x, p2->y-1, p2->z+pos-(n  >=trackSize?trackSize:0), trackWidth*1.2);
+    drawSegment( p1->cor? roadColorA: roadColorB,
+                p1->x, p1->y,   p1->z+pos-(n-1>=trackSize?trackSize:0),
+                p2->x, p2->y,   p2->z+pos-(n  >=trackSize?trackSize:0), trackWidth);
   }
   glutPostRedisplay();
 }
 
-void Desenha(){
+void draw(){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //limpa o buffer
   glLoadIdentity();
 
@@ -68,12 +68,11 @@ void Desenha(){
   GLfloat difusao[]={1.0, 1.0, 1.0, 1.0};
   glLightfv(GL_LIGHT0, GL_DIFFUSE, difusao);
   InitScreen();
-  //Iluminacao
-  // Pista
+
   glPushMatrix();
-    DesenhaPista();
+  drawTrack();
   glPopMatrix();
-  // Player
+
   glPushMatrix();
     glTranslatef(carPosX, 0,  -180);
     glTranslatef(0,0,-5);
@@ -81,59 +80,59 @@ void Desenha(){
     glRotatef(-0.4*turnCar + Points.point[pos].curve * 2000, 0, 0, 1);
     glTranslatef(0,0, 5);
     glScalef(s_car, s_car, s_car);
-    glLightfv(GL_LIGHT0, GL_POSITION, posicao);
-    DesenhaCarro(vermelho);
+    glLightfv(GL_LIGHT0, GL_POSITION, position);
+    drawCar(red);
   glPopMatrix();
 
-  for(int i = 0; i < tamPista; i+=991){
+  for(int i = 0; i < trackSize; i+=991){
     glPushMatrix();
-      if(contador == 0){
-        contador++;
+      if(count == 0){
+        count++;
         dxBot = 0;
-        DesenhaBots(corBot[contador], i, dxBot);
-      }else if(contador == 1){
-        contador++;
+        drawBots(botColor[count], i, dxBot);
+      }else if(count == 1){
+        count++;
         dxBot = 35;
-        DesenhaBots(corBot[contador], i, dxBot);
-      }else if(contador == 2){
-        contador++;
+        drawBots(botColor[count], i, dxBot);
+      }else if(count == 2){
+        count++;
         dxBot = 0;
-        DesenhaBots(corBot[contador], i, dxBot);
-      }else if(contador == 3){
-        contador = 0;
+        drawBots(botColor[count], i, dxBot);
+      }else if(count == 3){
+        count = 0;
         dxBot = -35;
-        DesenhaBots(corBot[contador], i, dxBot);
+        drawBots(botColor[count], i, dxBot);
       }
     glPopMatrix();
   }
 
   // Verifica Teclas:
-  if(!colidiu){
-    if(botoes[0] && anima){
+  if(!hasCollided){
+    if(buttons[0] && anima){
       pos += (0.12 * speed);
       posBot += 0.01 * speed;
     }
-    if((botoes[1] ) && anima){
+    if((buttons[1] ) && anima){
       pos -= (0.12 * speed);
       posBot += 0.15 * speed;
       speed -= 0.02;
     }
-    if(botoes[2] && !isTouchingLeft()){ // impedir virar pra esquerda quando estiver fora da pista
-      carPosX = carPosX >= -(larPista/2+30)? carPosX - 1.5 * speed/(15+(volta*2)): carPosX;
+    if(buttons[2] && !isTouchingLeft()){
+      carPosX = carPosX >= -(trackWidth/2+30)? carPosX - 1.5 * speed/(15+(retreat*2)) : carPosX;
       if(turnCar < 0)
         turnCar = turnCar > 25 ? turnCar : turnCar + 1.5;
       turnCar = turnCar > 25 ? turnCar : turnCar + 0.8;
-      if(anima) speed = speed > 1 ? speed + abs(carPosX) * 0.0001 * speed/(15+(volta*2)) : 1;
+      if(anima) speed = speed > 1 ? speed + abs(carPosX) * 0.0001 * speed/(15+(retreat*2)) : 1;
     }
-    if(botoes[3] && !isTouchingRight()){ // impedir virar pra direita quando estiver fora da pista
-      carPosX = carPosX <= larPista/2+30? carPosX + 1.5 * speed/(15+(volta*2)): carPosX;
+    if(buttons[3] && !isTouchingRight()){
+      carPosX = carPosX <= trackWidth/2+30? carPosX + 1.5 * speed/(15+(retreat*2)) : carPosX;
       if(turnCar > 0)
         turnCar = turnCar < -25 ? turnCar : turnCar - 1.5;
       turnCar = turnCar < -25 ? turnCar : turnCar - 0.8;
-      if(anima) speed = speed > 1 ? speed + abs(carPosX) * 0.0001 * speed/(15+(volta*2)): 1;
+      if(anima) speed = speed > 1 ? speed + abs(carPosX) * 0.0001 * speed/(15+(retreat*2)) : 1;
     }
 
-    if(!botoes[2] && !botoes[3]){
+    if(!buttons[2] && !buttons[3]){
       if(turnCar > 0){
         turnCar = turnCar * 0.92;
       }else if (turnCar < 0){
@@ -141,12 +140,12 @@ void Desenha(){
       }
     }
   }
-  while(pos >= tamPista)    pos -= tamPista;
-  while(pos < 0)            pos += tamPista;
-  while(posBot >= tamPista) posBot -= tamPista;
-  while(posBot < 0)         posBot += tamPista;
+  while(pos >= trackSize)       pos -= trackSize;
+  while(pos < 0)                pos += trackSize;
+  while(posBot >= trackSize)    posBot -= trackSize;
+  while(posBot < 0)             posBot += trackSize;
 
-  MsgGde(pontuacaoStr, -.7,.99, branco);
+  screenMessage(score, -.7,.99, white);
 
   glFlush();
   glutSwapBuffers();
