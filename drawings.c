@@ -82,7 +82,7 @@ void draw(){
     glTranslatef(0,0, 5);
     glScalef(s_car, s_car, s_car);
     glLightfv(GL_LIGHT0, GL_POSITION, position);
-    drawCar(red);
+    drawCar(white);
   glPopMatrix();
 
   for(int i = 0; i < trackSize; i+=991){

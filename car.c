@@ -314,7 +314,7 @@ void drawCar(GLfloat *color){
   glEnd();
 
   // glasses
-  glColor3f(0.2, 0.2, 0.2);
+  glColor3f(0, 0.1, 0.4);
 
   glBegin(GL_QUADS);
     // back
