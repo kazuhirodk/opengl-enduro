@@ -3,6 +3,7 @@
 #include <OpenGL/gl.h>
 #include <GLUT/glut.h>
 #else
+#include <windows.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
 #endif
@@ -38,8 +39,8 @@ void TimerFunc(int valor){
   }else if(!isTouchingRight() && !isTouchingLeft()){
     score += 0.2;
   }
-  // TO DO: SCORE NUM FUNCIONA DIREITO MDS
-      // sprintf(scoreArray, "Speed: %.0f km/h                             Points: %.0f",(speed-1)*7, score);
+
+  sprintf(scoreArray, "Velocidade: %.0f km/h                             Score: %.0f",(speed-1)*7, score);
 
   while(pos >= trackSize){
     pos -= trackSize;
@@ -197,8 +198,6 @@ int main(int argc, char *argv[]){
   glutCreateWindow("CG TRAB-FINAL - ENDURO");
     FitWindow(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
     glutReshapeFunc(Reshape);
-    glutPassiveMotionFunc(moveMouse);
-    glutMouseFunc(MouseFunc);
     glutKeyboardFunc(Keyboard);
     glutKeyboardUpFunc(UpKeyboard);
     glutSpecialFunc(SpecialKeys);

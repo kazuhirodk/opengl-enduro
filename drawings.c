@@ -145,7 +145,7 @@ void draw(){
   while(posBot >= trackSize)    posBot -= trackSize;
   while(posBot < 0)             posBot += trackSize;
 
-  screenMessage(scoreArray, -.7,.99, white);
+  screenMessage(scoreArray, -.7,.90, white);
 
   glFlush();
   glutSwapBuffers();

@@ -6,6 +6,7 @@
 #include <OpenGL/gl.h>
 #include <GLUT/glut.h>
 #else
+#include <windows.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
 #endif
@@ -74,21 +75,14 @@ int isTouchingLeft();
 int isTouchingRight();
 void initArray(Array *a, size_t initialSize);
 void insertArray(Array *a, tPoint element);
-void freeArray(Array *a);
-void Msg(char *string, GLfloat x, GLfloat y);
 void screenMessage(char *string, GLfloat x, GLfloat y, GLfloat *color);
-void delay(float secs);
 void FitWindow(GLsizei w, GLsizei h);
 void InitScreen();
-void moveMouse(int, int);
-void MouseFunc(int, int, int, int);
 void Keyboard(unsigned char, int, int);
 void UpKeyboard(unsigned char, int, int);
 void SpecialKeys(int, int, int);
 void TimerFunc(int );
 void Reshape(int, int);
-void Msg(char *, GLfloat , GLfloat );
-void Msg2(char *string, GLfloat x, GLfloat y, GLfloat *color);
 void drawCar(GLfloat *);
 void drawBots(GLfloat *, GLint, GLint);
 void drawTrack();

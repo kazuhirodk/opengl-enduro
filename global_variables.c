@@ -3,6 +3,7 @@
 #include <OpenGL/gl.h>
 #include <GLUT/glut.h>
 #else
+#include <windows.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
 #endif
@@ -28,9 +29,6 @@ GLboolean animate = false, hasCollided = false;
 GLint colorCount = 0, returnPrevious = 0;
 GLfloat score = 0, skyPosition = 0, R = 1, G = 1, B = 0;
 GLchar scoreArray[12];
-GLfloat posAct = -1.9, Ytitulo1 = 0, Xtitulo1 = 0;
-GLboolean flagIntro = false, flagIntro2= false;
-GLboolean flagIntro3 = false, flagIntro4 = false;
 
 GLint trackSize = 19000, trackWidth = 80, lap = 0;
 
@@ -42,28 +40,6 @@ GLint posBot = 500;
 GLfloat *botColor[] = {yellow, green, blue, pink};
 GLint teste = 0;
 
-void freeArray(Array *a) {
-  free(a->point);
-  a->point = NULL;
-  a->used = a->size = 0;
-}
-
-void delay(float secs){
-	float end = clock()/CLOCKS_PER_SEC + secs;
-	while((clock()/CLOCKS_PER_SEC) < end);
-}
-
-void Msg(char *string, GLfloat x, GLfloat y){
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  gluOrtho2D(-1.0,1.0,-1.0,1.0);
-    glRasterPos2f(x,y);
-    while(*string)
-      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,*string++);
-  glutPostRedisplay();
-}
 void screenMessage(char *string, GLfloat x, GLfloat y, GLfloat *color){
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -75,24 +51,6 @@ void screenMessage(char *string, GLfloat x, GLfloat y, GLfloat *color){
   glRasterPos2f(x,y);
   while(*string)
     glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,*string++);
-  glutPostRedisplay();
-}
-void Msg2(char *string, GLfloat x, GLfloat y, GLfloat *color){
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  glOrtho(-2.0, 2.0, -2.0, 2.0, -2.0, 500.0);
-
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  gluLookAt(10, 10, 10, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-  glScalef(.005,.005,.005);
-  glTranslatef(-300+x, y, 0);
-
-  glColor3fv(color);
-  glLineWidth(15.0);
-  while(*string)
-    glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN,*string++);
-  glLineWidth(1.0);
   glutPostRedisplay();
 }
 
@@ -171,26 +129,6 @@ int isTouchingLeft(){
 
 int isTouchingRight(){
   return carPosX <= trackWidth/2+30 ? 0 : 1;
-}
-
-void moveMouse(int x, int y){
-  y = w_height - y;
-  mouseX = (double)(((double)y/(double)w_height)*2.0 - 1.0);
-  mouseY = (double)(((double)x/(double)w_width)*2.0 -1.0);
-}
-
-void MouseFunc(int botao, int estado, int x, int y){
-  switch (botao){
-    case GLUT_LEFT_BUTTON :
-      if (estado == GLUT_DOWN){
-        y = w_height - y;
-        mouseClickX = (float)(((float)x/(float)w_width)*2.0 -1.0);
-        mouseClickY = (float)(((float)y/(float)w_height)*2.0 - 1.0);
-      }
-      break;
-    default :
-      break;
-  }
 }
 
 void Keyboard (unsigned char key, int x, int y){
