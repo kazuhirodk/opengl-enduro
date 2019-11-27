@@ -1,7 +1,7 @@
 #include "global_variables.h"
 
 void drawSegment(GLfloat *color, float x1, float y1, float z1,
-                              float x2, float y2, float z2, float w){
+                          float x2, float y2, float z2, float w){
   glColor3fv(color);
   glBegin(GL_QUADS);
     glVertex3f(x1-w,y1,z1);
@@ -118,18 +118,18 @@ void draw(){
       speed -= 0.02;
     }
     if(buttons[2] && !isTouchingLeft()){
-      carPosX = carPosX >= -(trackWidth/2+30)? carPosX - 1.5 * speed/(15+(retreat*2)) : carPosX;
+      carPosX = carPosX >= -(trackWidth/2+30)? carPosX - 1.5 * speed/(15+(lap*2)) : carPosX;
       if(turnCar < 0)
         turnCar = turnCar > 25 ? turnCar : turnCar + 1.5;
       turnCar = turnCar > 25 ? turnCar : turnCar + 0.8;
-      if(animate) speed = speed > 1 ? speed + abs(carPosX) * 0.0001 * speed/(15+(retreat*2)) : 1;
+      if(animate) speed = speed > 1 ? speed + abs(carPosX) * 0.0001 * speed/(15+(lap*2)) : 1;
     }
     if(buttons[3] && !isTouchingRight()){
-      carPosX = carPosX <= trackWidth/2+30? carPosX + 1.5 * speed/(15+(retreat*2)) : carPosX;
+      carPosX = carPosX <= trackWidth/2+30? carPosX + 1.5 * speed/(15+(lap*2)) : carPosX;
       if(turnCar > 0)
         turnCar = turnCar < -25 ? turnCar : turnCar - 1.5;
       turnCar = turnCar < -25 ? turnCar : turnCar - 0.8;
-      if(animate) speed = speed > 1 ? speed + abs(carPosX) * 0.0001 * speed/(15+(retreat*2)) : 1;
+      if(animate) speed = speed > 1 ? speed + abs(carPosX) * 0.0001 * speed/(15+(lap*2)) : 1;
     }
 
     if(!buttons[2] && !buttons[3]){

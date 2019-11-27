@@ -32,7 +32,7 @@ GLfloat posAct = -1.9, Ytitulo1 = 0, Xtitulo1 = 0;
 GLboolean flagIntro = false, flagIntro2= false;
 GLboolean flagIntro3 = false, flagIntro4 = false;
 
-GLint trackSize = 19000, trackWidth = 80, retreat = 0;
+GLint trackSize = 19000, trackWidth = 80, lap = 0;
 
 GLfloat s_car = 1;
 GLint pos = 0;
@@ -113,8 +113,8 @@ void InitScreen(){
   glPopMatrix();
   glLightfv(GL_LIGHT1, GL_AMBIENT, ambience);
 
-  if(retreat != returnPrevious2){
-    returnPrevious2 = retreat;
+  if(lap != returnPrevious2){
+    returnPrevious2 = lap;
     colorCount2 = (colorCount2+1) % 4;
   }
   if(colorCount2 == 3){

@@ -39,18 +39,18 @@ void TimerFunc(int valor){
     score += 0.2;
   }
   // TO DO: SCORE NUM FUNCIONA DIREITO MDS
-  //    sprintf(scoreArray, "Speed: %.0f km/h                             Points: %.0f",(speed-1)*7, score);
+      // sprintf(scoreArray, "Speed: %.0f km/h                             Points: %.0f",(speed-1)*7, score);
 
   while(pos >= trackSize){
     pos -= trackSize;
-    retreat++;
+    lap++;
   }
   while(pos < 0)            pos += trackSize;
   while(posBot >= trackSize) posBot -= trackSize;
   while(posBot < 0)         posBot += trackSize;
 
-  if(retreat != returnPrevious){
-      returnPrevious = retreat;
+  if(lap != returnPrevious){
+      returnPrevious = lap;
       colorCount = (colorCount+1) % 4;
   }
   if(colorCount == 3){
@@ -70,17 +70,17 @@ void TimerFunc(int valor){
     glClearColor(.0f, .0f, 0, .0f);
   }
 
-  if(speed<15+(retreat*2)) speed += 0.005;
+  if(speed<15+(lap*2)) speed += 0.005;
   if(speed<10) speed += 0.005;
   if(speed<5) speed += 0.005;
 
   if(Points.point[pos].curve > 0 ){
     if(carPosX >= -(trackWidth/2+25))
-      carPosX = carPosX-1.3*speed/(15+(retreat*2));
+      carPosX = carPosX-1.3*speed/(15+(lap*2));
   }
   if(Points.point[pos].curve < 0 ){
     if(carPosX <= trackWidth/2+25)
-      carPosX = carPosX+1.3*speed/(15+(retreat*2));
+      carPosX = carPosX+1.3*speed/(15+(lap*2));
   }
 
   if(isTouchingRight() || isTouchingLeft()){

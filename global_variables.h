@@ -47,7 +47,7 @@ extern GLdouble x_0,    y_0,    z_0,
                 xCam,   yCam,   zCam;
 
 extern GLboolean animate, hasCollided;
-extern GLint retreat, colorCount, returnPrevious;
+extern GLint lap, colorCount, returnPrevious;
 GLint crashPosition, returnPrevious2, colorCount2, starsY[200], starsX[200];
 GLfloat ambience[5], position[4];
 extern GLfloat score, skyPosition, R, G, B;
